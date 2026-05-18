@@ -56,75 +56,43 @@
   --app-font-mono: 'Menlo', monospace;
   --radius: 0.25rem;
 
-  --background: 24 15% 10%;
-  --foreground: 45 40% 90%;
-  --border: 24 20% 20%;
-  --input: 24 20% 20%;
-  --ring: 43 65% 52%;
+  /* Parchment background — warm aged paper */
+  --background: 37 55% 89%;
+  --foreground: 20 15% 12%;
+  --border: 30 25% 72%;
+  --input: 37 35% 82%;
+  --ring: 0 65% 28%;
 
-  --card: 24 18% 14%;
-  --card-foreground: 45 40% 90%;
-  --card-border: 24 25% 25%;
+  /* Cards: slightly lighter parchment */
+  --card: 38 50% 93%;
+  --card-foreground: 20 15% 12%;
+  --card-border: 30 25% 70%;
 
-  --popover: 24 18% 14%;
-  --popover-foreground: 45 40% 90%;
-  --popover-border: 24 25% 25%;
+  --popover: 38 50% 93%;
+  --popover-foreground: 20 15% 12%;
+  --popover-border: 30 25% 70%;
 
-  --primary: 43 65% 52%;
-  --primary-foreground: 24 15% 10%;
-  --primary-border: 43 65% 42%;
+  /* Primary = dark crimson red — D&D style */
+  --primary: 0 65% 28%;
+  --primary-foreground: 37 55% 95%;
+  --primary-border: 0 65% 22%;
 
-  --secondary: 24 20% 20%;
-  --secondary-foreground: 45 40% 90%;
-  --secondary-border: 24 20% 15%;
+  --secondary: 37 30% 80%;
+  --secondary-foreground: 20 15% 12%;
+  --secondary-border: 30 25% 72%;
 
-  --muted: 24 15% 15%;
-  --muted-foreground: 45 20% 65%;
-  --muted-border: 24 15% 10%;
+  --muted: 37 30% 83%;
+  --muted-foreground: 20 12% 35%;
+  --muted-border: 30 20% 75%;
 
-  --accent: 43 40% 30%;
-  --accent-foreground: 45 40% 90%;
-  --accent-border: 43 40% 20%;
+  --accent: 37 35% 76%;
+  --accent-foreground: 20 15% 12%;
+  --accent-border: 30 25% 68%;
 
-  --destructive: 0 60% 40%;
-  --destructive-foreground: 45 40% 90%;
-  --destructive-border: 0 60% 30%;
-}
-
-.dark {
-  --background: 24 15% 10%;
-  --foreground: 45 40% 90%;
-  --border: 24 20% 20%;
-  --input: 24 20% 20%;
-  --ring: 43 65% 52%;
-
-  --card: 24 18% 14%;
-  --card-foreground: 45 40% 90%;
-  --card-border: 24 25% 25%;
-
-  --popover: 24 18% 14%;
-  --popover-foreground: 45 40% 90%;
-  --popover-border: 24 25% 25%;
-
-  --primary: 43 65% 52%;
-  --primary-foreground: 24 15% 10%;
-  --primary-border: 43 65% 42%;
-
-  --secondary: 24 20% 20%;
-  --secondary-foreground: 45 40% 90%;
-  --secondary-border: 24 20% 15%;
-
-  --muted: 24 15% 15%;
-  --muted-foreground: 45 20% 65%;
-  --muted-border: 24 15% 10%;
-
-  --accent: 43 40% 30%;
-  --accent-foreground: 45 40% 90%;
-  --accent-border: 43 40% 20%;
-
-  --destructive: 0 60% 40%;
-  --destructive-foreground: 45 40% 90%;
-  --destructive-border: 0 60% 30%;
+  /* Destructive keeps dark red family */
+  --destructive: 0 70% 32%;
+  --destructive-foreground: 37 55% 95%;
+  --destructive-border: 0 70% 25%;
 }
 
 @layer base {

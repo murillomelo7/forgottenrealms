@@ -24,26 +24,27 @@ function resolveRandom(value: string, options: string[]): string {
   return value === "Qualquer" ? pickRandom(options) : value;
 }
 
-const SIZES = ["Vilarejo", "Cidade Pequena", "Cidade Média", "Cidade Grande", "Metrópole"];
+const SIZES = ["Assentamento", "Vilarejo", "Cidade Pequena", "Cidade Média", "Cidade Grande", "Metrópole"];
 const REGIONS = [
-  "Costa da Espada", "Vale do Vento Uivante", "Cormyr", "Sembia", "Thay",
-  "Amn", "Calimshan", "Chessenta", "Aguas Profundas", "Baldur's Gate",
-  "Neverwinter", "Waterdeep", "Luskan", "Icewind Dale", "Anauroch",
+  "Aguas Profundas", "Amn", "Anauroch", "Baldur's Gate",
+  "Calimshan", "Chessenta", "Cormyr", "Costa da Espada",
+  "Icewind Dale", "Luskan", "Mar da Lua", "Neverwinter",
+  "Sembia", "Terras dos Vales", "Thay", "Vale do Vento Gélido", "Waterdeep",
 ];
 const CULTURES = [
   "Humana (Faéruniana)", "Élfica", "Anã", "Halfling", "Gnômica",
   "Tiefling", "Draconiana", "Mista", "Exótica Oriental",
 ];
 const ALIGNMENTS = [
-  "Leal e Bom", "Neutro e Bom", "Caótico e Bom",
+  "Majoritariamente Boa", "Leal e Bom", "Neutro e Bom", "Caótico e Bom",
   "Leal e Neutro", "Neutro", "Caótico e Neutro",
-  "Leal e Mau", "Neutro e Mau", "Caótico e Mau",
+  "Leal e Mau", "Neutro e Mau", "Caótico e Mau", "Majoritariamente Má",
 ];
 
 const DISTRICT_TYPES = [
-  "Mercantil", "Nobre", "Portuário", "Militar", "Templos e Religioso",
-  "Mágico e Arcano", "Artesanal", "Boêmio e Entretenimento", "Gueto e Pobres",
-  "Subterrâneo / Esgotos", "Residencial", "Criminoso",
+  "Artesanal", "Boêmio e Entretenimento", "Comercial", "Criminoso",
+  "Gueto e Pobres", "Mágico e Arcano", "Militar", "Nobre",
+  "Portuário", "Residencial", "Subterrâneo / Esgotos", "Templos e Religioso",
 ];
 
 router.post("/generate/city", async (req, res) => {

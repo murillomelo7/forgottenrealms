@@ -621,7 +621,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-6 max-w-5xl mx-auto space-y-12">
+    <div className="min-h-screen bg-background text-foreground p-6 max-w-5xl mx-auto space-y-12 pb-28">
       {/* HEADER */}
       <header className="text-center space-y-3 py-8 border-b-2 border-primary/40">
         <h1 className="text-5xl font-serif text-primary tracking-tight font-bold">Tomo das Cidades Esquecidas</h1>
@@ -894,56 +894,8 @@ export default function Home() {
             ))}
           </div>
 
-          <Separator className="bg-primary/20" />
-
-          {/* ZONA 4 — Botões de Ação */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sticky bottom-5 z-10 bg-background/90 backdrop-blur-sm p-4 rounded-lg border border-primary/25 shadow-xl">
-            <Button
-              variant="outline"
-              data-testid="button-gerar-npc"
-              onClick={handleGenerateNpc}
-              disabled={generateNpc.isPending}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              {generateNpc.isPending ? "Gerando..." : "Gerar NPC"}
-            </Button>
-            <Button
-              variant="outline"
-              data-testid="button-criar-rumores"
-              onClick={handleGenerateRumors}
-              disabled={generateRumors.isPending}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              {generateRumors.isPending ? "Gerando..." : "Criar Rumores"}
-            </Button>
-            <Button
-              variant="outline"
-              data-testid="button-criar-gancho"
-              onClick={handleGenerateHook}
-              disabled={generateAdventureHook.isPending}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              {generateAdventureHook.isPending ? "Gerando..." : "Criar Gancho"}
-            </Button>
-            <Button
-              variant="outline"
-              data-testid="button-copiar-tudo"
-              onClick={handleCopyAll}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              Copiar Tudo
-            </Button>
-            <Button
-              data-testid="button-exportar-pdf"
-              onClick={handleExportPdf}
-              className="bg-primary text-primary-foreground hover:bg-primary/85 font-semibold col-span-2 md:col-span-1"
-            >
-              Exportar PDF
-            </Button>
-          </div>
-
           {/* Resultados Acumulados */}
-          <div className="space-y-6 pb-24">
+          <div className="space-y-6">
             {generateNpc.isPending && <Skeleton className="h-28 w-full bg-muted" />}
             {npcs.map((npc, idx) => (
               <Card key={`npc-${idx}`} data-testid={`card-npc-extra-${idx}`} className="bg-card border-primary/25 animate-in fade-in">
@@ -1009,6 +961,58 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* BARRA FIXA — sempre visível no fundo da página */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
+        <div className="w-full max-w-5xl px-6 pointer-events-auto">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 bg-background/95 backdrop-blur-md p-4 rounded-t-xl border border-primary/30 border-b-0 shadow-[0_-4px_24px_rgba(0,0,0,0.12)]">
+            <Button
+              variant="outline"
+              data-testid="button-gerar-npc"
+              onClick={handleGenerateNpc}
+              disabled={!city || generateNpc.isPending}
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-40"
+            >
+              {generateNpc.isPending ? "Gerando..." : "Gerar NPC"}
+            </Button>
+            <Button
+              variant="outline"
+              data-testid="button-criar-rumores"
+              onClick={handleGenerateRumors}
+              disabled={!city || generateRumors.isPending}
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-40"
+            >
+              {generateRumors.isPending ? "Gerando..." : "Criar Rumores"}
+            </Button>
+            <Button
+              variant="outline"
+              data-testid="button-criar-gancho"
+              onClick={handleGenerateHook}
+              disabled={!city || generateAdventureHook.isPending}
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-40"
+            >
+              {generateAdventureHook.isPending ? "Gerando..." : "Criar Gancho"}
+            </Button>
+            <Button
+              variant="outline"
+              data-testid="button-copiar-tudo"
+              onClick={handleCopyAll}
+              disabled={!city}
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-40"
+            >
+              Copiar Tudo
+            </Button>
+            <Button
+              data-testid="button-exportar-pdf"
+              onClick={handleExportPdf}
+              disabled={!city}
+              className="bg-primary text-primary-foreground hover:bg-primary/85 font-semibold col-span-2 md:col-span-1 disabled:opacity-40"
+            >
+              Exportar PDF
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

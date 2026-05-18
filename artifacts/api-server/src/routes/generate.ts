@@ -32,7 +32,7 @@ const REGIONS = [
   "Sembia", "Terras dos Vales", "Thay", "Vale do Vento Gélido", "Waterdeep",
 ];
 const CULTURES = [
-  "Humana (Faéruniana)", "Élfica", "Anã", "Halfling", "Gnômica",
+  "Cosmopolita", "Humana (Faéruniana)", "Élfica", "Anã", "Halfling", "Gnômica",
   "Tiefling", "Draconiana", "Mista", "Exótica Oriental",
 ];
 const ALIGNMENTS = [

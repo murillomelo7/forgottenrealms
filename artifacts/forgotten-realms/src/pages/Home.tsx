@@ -59,7 +59,7 @@ const REGIONS = [
   "Waterdeep",
 ];
 
-const CULTURES = ["Qualquer", "Humana (Faéruniana)", "Élfica", "Anã", "Halfling", "Gnômica", "Tiefling", "Draconiana", "Mista", "Exótica Oriental"];
+const CULTURES = ["Qualquer", "Cosmopolita", "Humana (Faéruniana)", "Élfica", "Anã", "Halfling", "Gnômica", "Tiefling", "Draconiana", "Mista", "Exótica Oriental"];
 
 const ALIGNMENTS = [
   "Qualquer",

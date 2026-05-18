@@ -1,15 +1,16 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Forgotten Realms City Generator API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: generate
+    description: Content generation operations
 paths:
   /healthz:
     get:
@@ -24,6 +25,102 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /generate/city:
+    post:
+      operationId: generateCity
+      tags: [generate]
+      summary: Generate a Forgotten Realms city
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CityInput"
+      responses:
+        "200":
+          description: Generated city data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+
+  /generate/district:
+    post:
+      operationId: generateDistrict
+      tags: [generate]
+      summary: Generate a district for an existing city
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DistrictInput"
+      responses:
+        "200":
+          description: Generated district data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/District"
+
+  /generate/npc:
+    post:
+      operationId: generateNpc
+      tags: [generate]
+      summary: Generate a notable NPC
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NpcInput"
+      responses:
+        "200":
+          description: Generated NPC data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Npc"
+
+  /generate/rumors:
+    post:
+      operationId: generateRumors
+      tags: [generate]
+      summary: Generate rumors for a city
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RumorsInput"
+      responses:
+        "200":
+          description: Generated rumors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rumors"
+
+  /generate/adventure-hook:
+    post:
+      operationId: generateAdventureHook
+      tags: [generate]
+      summary: Generate an adventure hook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdventureHookInput"
+      responses:
+        "200":
+          description: Generated adventure hook
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdventureHook"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +131,203 @@ components:
       required:
         - status
 
+    CityInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 25
+        size:
+          type: string
+        region:
+          type: string
+        culture:
+          type: string
+        alignment:
+          type: string
+      required:
+        - name
+        - size
+        - region
+        - culture
+        - alignment
+
+    City:
+      type: object
+      properties:
+        nome:
+          type: string
+        alcunha:
+          type: string
+        resumo:
+          type: string
+        populacao:
+          type: string
+        geografia:
+          type: string
+        economia:
+          type: string
+        governo:
+          type: string
+        marcasFamosos:
+          type: string
+        culturaLocal:
+          type: string
+        problemas:
+          type: string
+        npcs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Npc"
+      required:
+        - nome
+        - alcunha
+        - resumo
+        - populacao
+        - geografia
+        - economia
+        - governo
+        - marcasFamosos
+        - culturaLocal
+        - problemas
+        - npcs
+
+    DistrictInput:
+      type: object
+      properties:
+        tipo:
+          type: string
+        estabelecimentos:
+          type: integer
+          minimum: 1
+          maximum: 10
+        bases:
+          type: integer
+          minimum: 0
+          maximum: 5
+        cityContext:
+          type: string
+      required:
+        - tipo
+        - estabelecimentos
+        - bases
+        - cityContext
+
+    District:
+      type: object
+      properties:
+        nome:
+          type: string
+        tipo:
+          type: string
+        atmosfera:
+          type: string
+        descricao:
+          type: string
+        populacao:
+          type: string
+        funcao:
+          type: string
+        estabelecimentos:
+          type: array
+          items:
+            type: string
+        bases:
+          type: array
+          items:
+            type: string
+        problemasLocais:
+          type: string
+        npcs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Npc"
+      required:
+        - nome
+        - tipo
+        - atmosfera
+        - descricao
+        - populacao
+        - funcao
+        - estabelecimentos
+        - bases
+        - problemasLocais
+        - npcs
+
+    Npc:
+      type: object
+      properties:
+        nome:
+          type: string
+        raca:
+          type: string
+        classe:
+          type: string
+        descricao:
+          type: string
+        papel:
+          type: string
+        segredo:
+          type: string
+      required:
+        - nome
+        - raca
+        - classe
+        - descricao
+        - papel
+        - segredo
+
+    NpcInput:
+      type: object
+      properties:
+        cityContext:
+          type: string
+        districtContext:
+          type: ["string", "null"]
+      required:
+        - cityContext
+
+    RumorsInput:
+      type: object
+      properties:
+        cityContext:
+          type: string
+      required:
+        - cityContext
+
+    Rumors:
+      type: object
+      properties:
+        rumores:
+          type: array
+          items:
+            type: string
+      required:
+        - rumores
+
+    AdventureHookInput:
+      type: object
+      properties:
+        cityContext:
+          type: string
+        districtsContext:
+          type: ["string", "null"]
+      required:
+        - cityContext
+
+    AdventureHook:
+      type: object
+      properties:
+        titulo:
+          type: string
+        descricao:
+          type: string
+        complicacao:
+          type: string
+        recompensa:
+          type: string
+      required:
+        - titulo
+        - descricao
+        - complicacao
+        - recompensa

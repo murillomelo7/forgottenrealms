@@ -254,6 +254,53 @@ components:
         - problemasLocais
         - npcs
 
+    NpcAtributos:
+      type: object
+      properties:
+        for:
+          type: string
+        des:
+          type: string
+        con:
+          type: string
+        int:
+          type: string
+        sab:
+          type: string
+        car:
+          type: string
+      required:
+        - for
+        - des
+        - con
+        - int
+        - sab
+        - car
+
+    NpcEstatisticas:
+      type: object
+      properties:
+        nivel:
+          type: string
+        bonusProficiencia:
+          type: string
+        classeArmadura:
+          type: integer
+        pontosDeSaude:
+          type: string
+        atributos:
+          $ref: "#/components/schemas/NpcAtributos"
+        pericias:
+          type: array
+          items:
+            type: string
+      required:
+        - bonusProficiencia
+        - classeArmadura
+        - pontosDeSaude
+        - atributos
+        - pericias
+
     Npc:
       type: object
       properties:
@@ -269,6 +316,8 @@ components:
           type: string
         segredo:
           type: string
+        estatisticas:
+          $ref: "#/components/schemas/NpcEstatisticas"
       required:
         - nome
         - raca

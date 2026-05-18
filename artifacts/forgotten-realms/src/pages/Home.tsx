@@ -17,7 +17,7 @@ import {
   useGenerateRumors,
   useGenerateAdventureHook,
 } from "@workspace/api-client-react";
-import type { City, District, Npc, Rumors, AdventureHook } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { City, District, Npc, Rumors, AdventureHook } from "@workspace/api-client-react";
 import jsPDF from "jspdf";
 
 // --- Schemas ---
@@ -92,6 +92,45 @@ const DISTRICT_TYPES = [
   "Templos e Religioso",
 ];
 
+// --- Stat Block ---
+function StatBlock({ stat }: { stat: Npc["estatisticas"] }) {
+  if (!stat) return null;
+  const attrs = [
+    { label: "FOR", val: stat.atributos?.for },
+    { label: "DES", val: stat.atributos?.des },
+    { label: "CON", val: stat.atributos?.con },
+    { label: "INT", val: stat.atributos?.int },
+    { label: "SAB", val: stat.atributos?.sab },
+    { label: "CAR", val: stat.atributos?.car },
+  ];
+  return (
+    <div className="mt-3 border border-primary/30 rounded bg-primary/5 p-3 space-y-2">
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs border-b border-primary/20 pb-2 mb-2">
+        {stat.nivel && (
+          <span><span className="text-primary font-bold">Nível:</span> {stat.nivel}</span>
+        )}
+        <span><span className="text-primary font-bold">Bônus Prof.:</span> {stat.bonusProficiencia}</span>
+        <span><span className="text-primary font-bold">CA:</span> {stat.classeArmadura}</span>
+        <span><span className="text-primary font-bold">PV:</span> {stat.pontosDeSaude}</span>
+      </div>
+      <div className="grid grid-cols-6 gap-1 text-center">
+        {attrs.map(({ label, val }) => (
+          <div key={label} className="flex flex-col items-center bg-muted rounded px-1 py-1.5">
+            <span className="text-primary font-bold text-[10px] uppercase leading-none">{label}</span>
+            <span className="text-foreground font-bold text-sm mt-1">{val}</span>
+          </div>
+        ))}
+      </div>
+      {stat.pericias && stat.pericias.length > 0 && (
+        <div className="text-xs pt-1">
+          <span className="text-primary font-bold">Perícias: </span>
+          <span className="text-foreground/80">{stat.pericias.join(" · ")}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // --- NPC Card Component ---
 function NpcCard({ npc, idx }: { npc: Npc; idx: number }) {
   return (
@@ -106,6 +145,7 @@ function NpcCard({ npc, idx }: { npc: Npc; idx: number }) {
           <p><span className="text-primary font-bold">Papel:</span> {npc.papel}</p>
           <p><span className="text-destructive font-bold">Segredo:</span> {npc.segredo}</p>
         </div>
+        <StatBlock stat={npc.estatisticas} />
       </CardContent>
     </Card>
   );
@@ -246,7 +286,7 @@ export default function Home() {
       content += `Problemas: ${city.problemas}\n\n`;
       if (city.npcs?.length) {
         content += `NPCs da Cidade:\n`;
-        city.npcs.forEach((n) => {
+        city.npcs.forEach((n: Npc) => {
           content += `- ${n.nome} (${n.raca} ${n.classe}): ${n.descricao}. Papel: ${n.papel}. Segredo: ${n.segredo}\n`;
         });
         content += "\n";
@@ -264,7 +304,7 @@ export default function Home() {
         if (d.bases?.length) content += `Bases: ${d.bases.join(" | ")}\n`;
         content += `Problemas: ${d.problemasLocais}\n`;
         if (d.npcs?.length) {
-          d.npcs.forEach((n) => {
+          d.npcs.forEach((n: Npc) => {
             content += `  NPC: ${n.nome} (${n.raca} ${n.classe}) — ${n.descricao} Papel: ${n.papel}. Segredo: ${n.segredo}\n`;
           });
         }
@@ -273,7 +313,7 @@ export default function Home() {
     }
     if (npcs.length) {
       content += `=== NPCs EXTRAS ===\n`;
-      npcs.forEach((n) => {
+      npcs.forEach((n: Npc) => {
         content += `- ${n.nome} (${n.raca} ${n.classe}): ${n.descricao}. Papel: ${n.papel}. Segredo: ${n.segredo}\n`;
       });
       content += "\n";
@@ -281,7 +321,7 @@ export default function Home() {
     if (rumorsList.length) {
       content += `=== RUMORES ===\n`;
       rumorsList.forEach((r) => {
-        r.rumores?.forEach((rumor) => { content += `- ${rumor}\n`; });
+        r.rumores?.forEach((rumor: string) => { content += `- ${rumor}\n`; });
       });
       content += "\n";
     }
@@ -387,6 +427,65 @@ export default function Home() {
 
     const gap = (n = 3) => { y += n; };
 
+    const addNpcBlock = (npc: Npc) => {
+      ensureSpace(14);
+      doc.setFont("times", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...DARK_RED);
+      doc.text(`${npc.nome}  `, margin, y);
+      doc.setFont("times", "italic");
+      doc.setFontSize(9);
+      doc.setTextColor(...GRAY);
+      doc.text(`${npc.raca} · ${npc.classe}`, margin + doc.getTextWidth(`${npc.nome}  `), y);
+      y += 5;
+      addBody(npc.descricao, 4);
+      doc.setFont("times", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...GRAY);
+      ensureSpace(5);
+      doc.text(`Papel: ${npc.papel}`, margin + 4, y);
+      y += 4.5;
+      ensureSpace(5);
+      doc.text(`Segredo: ${npc.segredo}`, margin + 4, y);
+      y += 5;
+      const st = npc.estatisticas;
+      if (st) {
+        ensureSpace(10);
+        doc.setFont("times", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(...DARK_RED);
+        const statParts: string[] = [];
+        if (st.nivel) statParts.push(`Nível ${st.nivel}`);
+        statParts.push(`Prof. ${st.bonusProficiencia}`);
+        statParts.push(`CA ${st.classeArmadura}`);
+        statParts.push(`PV ${st.pontosDeSaude}`);
+        doc.text(statParts.join("  ·  "), margin + 4, y);
+        y += 4.5;
+        if (st.atributos) {
+          const attrLine = [
+            `FOR ${st.atributos.for}`, `DES ${st.atributos.des}`, `CON ${st.atributos.con}`,
+            `INT ${st.atributos.int}`, `SAB ${st.atributos.sab}`, `CAR ${st.atributos.car}`,
+          ].join("   ");
+          doc.setTextColor(...BLACK);
+          ensureSpace(5);
+          doc.text(attrLine, margin + 4, y);
+          y += 4.5;
+        }
+        if (st.pericias?.length) {
+          doc.setTextColor(...GRAY);
+          ensureSpace(5);
+          const perLine = `Perícias: ${st.pericias.join(" · ")}`;
+          const wrapped = doc.splitTextToSize(perLine, usableW - 8);
+          wrapped.forEach((line: string) => {
+            ensureSpace(5);
+            doc.text(line, margin + 4, y);
+            y += 4.2;
+          });
+        }
+      }
+      y += 4;
+    };
+
     // ── Cover / Header ──
     doc.setFillColor(...PARCHMENT_LIGHT);
     doc.rect(margin, y, usableW, 22, "F");
@@ -429,28 +528,7 @@ export default function Home() {
       drawRule();
       addSectionLabel("NPCs Importantes");
       gap(1);
-      city.npcs.forEach((npc) => {
-        ensureSpace(14);
-        doc.setFont("times", "bold");
-        doc.setFontSize(10);
-        doc.setTextColor(...DARK_RED);
-        doc.text(`${npc.nome}  `, margin, y);
-        doc.setFont("times", "italic");
-        doc.setFontSize(9);
-        doc.setTextColor(...GRAY);
-        doc.text(`${npc.raca} · ${npc.classe}`, margin + doc.getTextWidth(`${npc.nome}  `), y);
-        y += 5;
-        addBody(npc.descricao, 4);
-        doc.setFont("times", "normal");
-        doc.setFontSize(9);
-        doc.setTextColor(...GRAY);
-        ensureSpace(5);
-        doc.text(`Papel: ${npc.papel}`, margin + 4, y);
-        y += 4.5;
-        ensureSpace(5);
-        doc.text(`Segredo: ${npc.segredo}`, margin + 4, y);
-        y += 6;
-      });
+      city.npcs.forEach((npc) => { addNpcBlock(npc); });
     }
 
     // ── Districts ──
@@ -487,28 +565,7 @@ export default function Home() {
       if (d.npcs?.length) {
         addSectionLabel("NPCs do Distrito");
         gap(1);
-        d.npcs.forEach((npc) => {
-          ensureSpace(12);
-          doc.setFont("times", "bold");
-          doc.setFontSize(10);
-          doc.setTextColor(...DARK_RED);
-          doc.text(`${npc.nome}  `, margin, y);
-          doc.setFont("times", "italic");
-          doc.setFontSize(9);
-          doc.setTextColor(...GRAY);
-          doc.text(`${npc.raca} · ${npc.classe}`, margin + doc.getTextWidth(`${npc.nome}  `), y);
-          y += 5;
-          addBody(npc.descricao, 4);
-          doc.setFont("times", "normal");
-          doc.setFontSize(9);
-          doc.setTextColor(...GRAY);
-          ensureSpace(5);
-          doc.text(`Papel: ${npc.papel}`, margin + 4, y);
-          y += 4.5;
-          ensureSpace(5);
-          doc.text(`Segredo: ${npc.segredo}`, margin + 4, y);
-          y += 6;
-        });
+        d.npcs.forEach((npc) => { addNpcBlock(npc); });
       }
       void i;
     });
@@ -517,28 +574,7 @@ export default function Home() {
     if (npcs.length) {
       gap(4); drawRule();
       addTitle("NPCs Notáveis Extras", 14);
-      npcs.forEach((npc) => {
-        ensureSpace(14);
-        doc.setFont("times", "bold");
-        doc.setFontSize(10);
-        doc.setTextColor(...DARK_RED);
-        doc.text(`${npc.nome}  `, margin, y);
-        doc.setFont("times", "italic");
-        doc.setFontSize(9);
-        doc.setTextColor(...GRAY);
-        doc.text(`${npc.raca} · ${npc.classe}`, margin + doc.getTextWidth(`${npc.nome}  `), y);
-        y += 5;
-        addBody(npc.descricao, 4);
-        doc.setFont("times", "normal");
-        doc.setFontSize(9);
-        doc.setTextColor(...GRAY);
-        ensureSpace(5);
-        doc.text(`Papel: ${npc.papel}`, margin + 4, y);
-        y += 4.5;
-        ensureSpace(5);
-        doc.text(`Segredo: ${npc.segredo}`, margin + 4, y);
-        y += 6;
-      });
+      npcs.forEach((npc) => { addNpcBlock(npc); });
     }
 
     // ── Rumors ──
@@ -740,7 +776,7 @@ export default function Home() {
               <div className="p-6 bg-muted/40 border-t border-border/40">
                 <SectionHeading>NPCs Importantes</SectionHeading>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                  {city.npcs.map((npc, idx) => <NpcCard key={idx} npc={npc} idx={idx} />)}
+                  {city.npcs.map((npc: Npc, idx: number) => <NpcCard key={idx} npc={npc} idx={idx} />)}
                 </div>
               </div>
             )}
@@ -829,7 +865,7 @@ export default function Home() {
                     <div className="space-y-1">
                       <SectionHeading>Estabelecimentos</SectionHeading>
                       <ul className="text-sm text-foreground/80 space-y-1">
-                        {district.estabelecimentos.map((e, i) => (
+                        {district.estabelecimentos.map((e: string, i: number) => (
                           <li key={i} className="flex gap-2"><span className="text-primary">·</span>{e}</li>
                         ))}
                       </ul>
@@ -839,7 +875,7 @@ export default function Home() {
                     <div className="space-y-1">
                       <SectionHeading>Bases / Locais Secretos</SectionHeading>
                       <ul className="text-sm text-foreground/80 space-y-1">
-                        {district.bases.map((b, i) => (
+                        {district.bases.map((b: string, i: number) => (
                           <li key={i} className="flex gap-2"><span className="text-destructive">·</span>{b}</li>
                         ))}
                       </ul>
@@ -850,7 +886,7 @@ export default function Home() {
                   <div className="p-6 bg-muted/40 border-t border-border/40">
                     <SectionHeading>NPCs do Distrito</SectionHeading>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                      {district.npcs.map((npc, nidx) => <NpcCard key={nidx} npc={npc} idx={nidx} />)}
+                      {district.npcs.map((npc: Npc, nidx: number) => <NpcCard key={nidx} npc={npc} idx={nidx} />)}
                     </div>
                   </div>
                 )}
@@ -924,6 +960,7 @@ export default function Home() {
                     <p><span className="text-primary font-bold">Papel:</span> {npc.papel}</p>
                     <p><span className="text-destructive font-bold">Segredo:</span> {npc.segredo}</p>
                   </div>
+                  <StatBlock stat={npc.estatisticas} />
                 </CardContent>
               </Card>
             ))}
@@ -936,7 +973,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="pt-4">
                   <ul className="space-y-2 text-foreground/80">
-                    {rSet.rumores?.map((r, i) => (
+                    {rSet.rumores?.map((r: string, i: number) => (
                       <li key={i} className="flex gap-2 leading-relaxed text-sm">
                         <span className="text-primary mt-0.5">·</span>
                         {r}

@@ -5,6 +5,7 @@
  * Forgotten Realms City Generator API
  * OpenAPI spec version: 0.1.0
  */
+import type { NpcEstatisticas } from './npcEstatisticas';
 
 export interface Npc {
   nome: string;
@@ -13,4 +14,5 @@ export interface Npc {
   descricao: string;
   papel: string;
   segredo: string;
+  estatisticas?: NpcEstatisticas;
 }

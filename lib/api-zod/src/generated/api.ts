@@ -49,7 +49,22 @@ export const GenerateCityResponse = zod.object({
   "classe": zod.string(),
   "descricao": zod.string(),
   "papel": zod.string(),
-  "segredo": zod.string()
+  "segredo": zod.string(),
+  "estatisticas": zod.object({
+  "nivel": zod.string().optional(),
+  "bonusProficiencia": zod.string(),
+  "classeArmadura": zod.number(),
+  "pontosDeSaude": zod.string(),
+  "atributos": zod.object({
+  "for": zod.string(),
+  "des": zod.string(),
+  "con": zod.string(),
+  "int": zod.string(),
+  "sab": zod.string(),
+  "car": zod.string()
+}),
+  "pericias": zod.array(zod.string())
+}).optional()
 }))
 })
 
@@ -87,7 +102,22 @@ export const GenerateDistrictResponse = zod.object({
   "classe": zod.string(),
   "descricao": zod.string(),
   "papel": zod.string(),
-  "segredo": zod.string()
+  "segredo": zod.string(),
+  "estatisticas": zod.object({
+  "nivel": zod.string().optional(),
+  "bonusProficiencia": zod.string(),
+  "classeArmadura": zod.number(),
+  "pontosDeSaude": zod.string(),
+  "atributos": zod.object({
+  "for": zod.string(),
+  "des": zod.string(),
+  "con": zod.string(),
+  "int": zod.string(),
+  "sab": zod.string(),
+  "car": zod.string()
+}),
+  "pericias": zod.array(zod.string())
+}).optional()
 }))
 })
 
@@ -106,7 +136,22 @@ export const GenerateNpcResponse = zod.object({
   "classe": zod.string(),
   "descricao": zod.string(),
   "papel": zod.string(),
-  "segredo": zod.string()
+  "segredo": zod.string(),
+  "estatisticas": zod.object({
+  "nivel": zod.string().optional(),
+  "bonusProficiencia": zod.string(),
+  "classeArmadura": zod.number(),
+  "pontosDeSaude": zod.string(),
+  "atributos": zod.object({
+  "for": zod.string(),
+  "des": zod.string(),
+  "con": zod.string(),
+  "int": zod.string(),
+  "sab": zod.string(),
+  "car": zod.string()
+}),
+  "pericias": zod.array(zod.string())
+}).optional()
 })
 
 

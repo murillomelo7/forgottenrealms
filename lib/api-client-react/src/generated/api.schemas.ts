@@ -18,6 +18,24 @@ export interface CityInput {
   alignment: string;
 }
 
+export interface NpcAtributos {
+  for: string;
+  des: string;
+  con: string;
+  int: string;
+  sab: string;
+  car: string;
+}
+
+export interface NpcEstatisticas {
+  nivel?: string;
+  bonusProficiencia: string;
+  classeArmadura: number;
+  pontosDeSaude: string;
+  atributos: NpcAtributos;
+  pericias: string[];
+}
+
 export interface Npc {
   nome: string;
   raca: string;
@@ -25,6 +43,7 @@ export interface Npc {
   descricao: string;
   papel: string;
   segredo: string;
+  estatisticas?: NpcEstatisticas;
 }
 
 export interface City {

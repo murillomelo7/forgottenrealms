@@ -14,6 +14,8 @@ export * from './district';
 export * from './districtInput';
 export * from './healthStatus';
 export * from './npc';
+export * from './npcAtributos';
+export * from './npcEstatisticas';
 export * from './npcInput';
 export * from './rumors';
 export * from './rumorsInput';

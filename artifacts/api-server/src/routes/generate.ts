@@ -83,10 +83,18 @@ Responda APENAS com um JSON válido neste formato exato:
     {
       "nome": "string",
       "raca": "string",
-      "classe": "string",
+      "classe": "string (ou ocupação se não for aventureiro)",
       "descricao": "string (aparência e personalidade em 1-2 frases)",
       "papel": "string (função na cidade)",
-      "segredo": "string (segredo ou motivação oculta)"
+      "segredo": "string (segredo ou motivação oculta)",
+      "estatisticas": {
+        "nivel": "string ou null (ex: '5º' para aventureiros, null para civis)",
+        "bonusProficiencia": "string (ex: '+3')",
+        "classeArmadura": number,
+        "pontosDeSaude": "string (ex: '45 (7d8+14)')",
+        "atributos": { "for": "string", "des": "string", "con": "string", "int": "string", "sab": "string", "car": "string" },
+        "pericias": ["string"] (lista das perícias com proficiência, ex: "Percepção +5")
+      }
     }
   ] (gere 3-5 NPCs importantes e interessantes)
 }`;
@@ -147,10 +155,18 @@ Responda APENAS com um JSON válido neste formato exato:
     {
       "nome": "string",
       "raca": "string",
-      "classe": "string",
+      "classe": "string (ou ocupação se não for aventureiro)",
       "descricao": "string (aparência e personalidade em 1-2 frases)",
       "papel": "string (função no distrito)",
-      "segredo": "string (segredo ou motivação oculta)"
+      "segredo": "string (segredo ou motivação oculta)",
+      "estatisticas": {
+        "nivel": "string ou null (ex: '5º' para aventureiros, null para civis)",
+        "bonusProficiencia": "string (ex: '+3')",
+        "classeArmadura": number,
+        "pontosDeSaude": "string (ex: '45 (7d8+14)')",
+        "atributos": { "for": "string", "des": "string", "con": "string", "int": "string", "sab": "string", "car": "string" },
+        "pericias": ["string"] (lista das perícias com proficiência, ex: "Percepção +5")
+      }
     }
   ] (gere 2-3 NPCs locais interessantes)
 }`;
@@ -199,7 +215,22 @@ Crie um NPC único, memorável e relevante para o cenário. Responda APENAS com 
   "classe": "string (ou ocupação se não for aventureiro)",
   "descricao": "string (aparência física e personalidade marcante, 2-3 frases)",
   "papel": "string (função na sociedade local)",
-  "segredo": "string (segredo obscuro ou motivação oculta que o torna interessante para a aventura)"
+  "segredo": "string (segredo obscuro ou motivação oculta que o torna interessante para a aventura)",
+  "estatisticas": {
+    "nivel": "string ou null (ex: '5º' para aventureiros, null para civis sem classe)",
+    "bonusProficiencia": "string (ex: '+3')",
+    "classeArmadura": number (valor numérico, ex: 14),
+    "pontosDeSaude": "string (ex: '45 (7d8+14)')",
+    "atributos": {
+      "for": "string (modificador com sinal, ex: '+1')",
+      "des": "string (ex: '+3')",
+      "con": "string (ex: '+2')",
+      "int": "string (ex: '-1')",
+      "sab": "string (ex: '+0')",
+      "car": "string (ex: '+4')"
+    },
+    "pericias": ["string (perícia e bônus total, ex: 'Percepção +5', 'Enganação +7')"]
+  }
 }`;
 
   try {

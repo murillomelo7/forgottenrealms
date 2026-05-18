@@ -93,7 +93,8 @@ Responda APENAS com um JSON válido neste formato exato:
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5.1",
-      max_completion_tokens: 2000,
+      max_completion_tokens: 8192,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
@@ -101,8 +102,7 @@ Responda APENAS com um JSON válido neste formato exato:
     });
 
     const content = response.choices[0]?.message?.content ?? "{}";
-    const cleanContent = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    const cityData = JSON.parse(cleanContent);
+    const cityData = JSON.parse(content);
 
     res.json(cityData);
   } catch (err) {
@@ -157,7 +157,8 @@ Responda APENAS com um JSON válido neste formato exato:
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5.1",
-      max_completion_tokens: 1500,
+      max_completion_tokens: 8192,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
@@ -165,8 +166,7 @@ Responda APENAS com um JSON válido neste formato exato:
     });
 
     const content = response.choices[0]?.message?.content ?? "{}";
-    const cleanContent = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    const districtData = JSON.parse(cleanContent);
+    const districtData = JSON.parse(content);
 
     res.json(districtData);
   } catch (err) {
@@ -204,7 +204,8 @@ Crie um NPC único, memorável e relevante para o cenário. Responda APENAS com 
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5.1",
-      max_completion_tokens: 500,
+      max_completion_tokens: 8192,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
@@ -212,8 +213,7 @@ Crie um NPC único, memorável e relevante para o cenário. Responda APENAS com 
     });
 
     const content = response.choices[0]?.message?.content ?? "{}";
-    const cleanContent = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    const npcData = JSON.parse(cleanContent);
+    const npcData = JSON.parse(content);
 
     res.json(npcData);
   } catch (err) {
@@ -252,7 +252,8 @@ Responda APENAS com um JSON válido:
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5.1",
-      max_completion_tokens: 600,
+      max_completion_tokens: 8192,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
@@ -260,8 +261,7 @@ Responda APENAS com um JSON válido:
     });
 
     const content = response.choices[0]?.message?.content ?? "{}";
-    const cleanContent = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    const rumorsData = JSON.parse(cleanContent);
+    const rumorsData = JSON.parse(content);
 
     res.json(rumorsData);
   } catch (err) {
@@ -298,7 +298,8 @@ Responda APENAS com um JSON válido:
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5.1",
-      max_completion_tokens: 600,
+      max_completion_tokens: 8192,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
@@ -306,8 +307,7 @@ Responda APENAS com um JSON válido:
     });
 
     const content = response.choices[0]?.message?.content ?? "{}";
-    const cleanContent = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    const hookData = JSON.parse(cleanContent);
+    const hookData = JSON.parse(content);
 
     res.json(hookData);
   } catch (err) {

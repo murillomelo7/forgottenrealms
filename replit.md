@@ -7,9 +7,26 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
+- `pnpm run build:vercel` — build for Vercel (API bundle + frontend static files)
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string
+
+## Vercel Deployment
+
+The project is ready for Vercel. Configuration lives in `vercel.json` at the root.
+
+**Vercel project settings:**
+- Framework Preset: Other
+- Build Command: `pnpm run build:vercel`
+- Output Directory: `artifacts/forgotten-realms/dist/public`
+- Install Command: `pnpm install`
+
+**Required environment variables in Vercel dashboard:**
+- `DATABASE_URL` — PostgreSQL connection string
+- `OPENAI_API_KEY` — Standard OpenAI API key (outside Replit, use this instead of the Replit integration vars)
+
+The API is served via a Vercel serverless function at `api/index.js`, which imports the pre-built Express bundle from `artifacts/api-server/dist/vercel.mjs`. All `/api/*` routes are forwarded to that function; all other routes serve the SPA.
 
 ## Stack
 
